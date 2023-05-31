@@ -1,0 +1,28 @@
+# .github/workflows/stale-branches.yml
+
+name: Stale Branches
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'
+    - cron: '0 9 * * 2-5'
+    
+permissions:
+  contents: write
+
+jobs:
+  stale_branches:
+    runs-on: ubuntu-latest
+    if: github.event.schedule != '0 9 * * 2-5'
+    steps:
+    - name: Stale Branches
+      uses: crs-k/stale-branches@v3.0.0
+      with:
+        repo-token: '${{ secrets.GITHUB_TOKEN }}'
+        days-before-stale: 1
+        days-before-delete: 1
+        comment-updates: false
+        max-issues: 0
+        tag-committer: false
+        compare-branches: 'info'
+        branches-filter-regex: '^((?!dependabot))'
